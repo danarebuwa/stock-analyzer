@@ -12,7 +12,7 @@ def format_dollars(value):
     return f"${value:,.0f}"
 
 # Function to fetch financial statement symbols
-@st.cache_resource(show_spinner=False)
+@st.cache(show_spinner=False)
 def fetch_resource(url: str):
     return requests.get(url).json()
 
