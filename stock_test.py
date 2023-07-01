@@ -10,6 +10,14 @@ if not st.session_state.get('data_fetched', False):  # If 'data_fetched' not set
     st.markdown("## About")
     st.markdown("This application is created by **Daniel Bosun-Arebuwa**, with the aim to help investors understand fundamental analysis.")
 
+    st.markdown("## How to Use")
+    st.markdown("""
+    1. Get your API key from [Financial Modeling Prep](https://financialmodelingprep.com/developer).
+    2. Enter the API key in the sidebar.
+    3. Select the company you are interested in from the dropdown list in the sidebar.
+    4. Click on the 'Fetch data' button.
+    5. View the fetched data and financial ratios, and explore the visualizations.
+    """)
 # Function to format numbers with commas and dollar signs
 def format_dollars(value):
     return f"${value:,.0f}"
