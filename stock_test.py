@@ -6,6 +6,9 @@ import plotly.graph_objects as go
 st.title('Company Performance Analysis')
 st.write('This application fetches and analyses financial data of public companies to determine their performance. Financial statements such as income statement, balance sheet, and cash flow statement are fetched and key financial ratios are calculated to provide insights into the company’s financial health.')
 
+if not st.session_state.get('data_fetched', False):  # If 'data_fetched' not set in session_state, show the intro
+    st.markdown("## About")
+    st.markdown("This application is created by **Daniel Bosun-Arebuwa**, with the aim to help investors understand fundamental analysis.")
 
 # Function to format numbers with commas and dollar signs
 def format_dollars(value):
