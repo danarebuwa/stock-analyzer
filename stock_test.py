@@ -18,11 +18,11 @@ if not st.session_state.get('data_fetched', False):  # If 'data_fetched' not set
     4. Click on the 'Fetch data' button.
     5. View the fetched data and financial ratios, and explore the visualizations.
     """)
-# Function to format numbers with commas and dollar signs
+
 def format_dollars(value):
     return f"${value:,.0f}"
 
-# Function to fetch financial statement symbols
+
 @st.cache(show_spinner=False)
 def fetch_resource(url: str):
     return requests.get(url).json()
@@ -33,41 +33,40 @@ def get_financial_statement_symbols(api_key):
     data = fetch_resource(url)
     return data
 
-# Function to fetch income statement
+
 def get_income_statement(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/income-statement/{symbol}?limit=120&apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data
 
-# Function to fetch quote
+
 def get_quote(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data[0]
 
-# Function to fetch balance sheet
+
 def get_balance_sheet(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/balance-sheet-statement/{symbol}?limit=1&apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data[0]
 
-# Function to fetch cash flow statement
+
 def get_cash_flow_statement(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/cash-flow-statement/{symbol}?limit=1&apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data[0]
-# Function to fetch enterprise value
+
 def get_enterprise_value(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/enterprise-values/{symbol}?limit=40&apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data
 
-# Function to fetch financial statement growth
 def get_financial_statement_growth(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/financial-growth/{symbol}?limit=20&apikey={api_key}"
     response = requests.get(url)
@@ -75,21 +74,21 @@ def get_financial_statement_growth(symbol, api_key):
     return data
 
 
-# Function to fetch key metrics
+
 def get_key_metrics(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/key-metrics/{symbol}?limit=40&apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data
 
-# Function to fetch company rating
+
 def get_company_rating(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/rating/{symbol}?apikey={api_key}"
     response = requests.get(url)
     data = response.json()
     return data
 
-# Function to fetch discounted cash flow value
+
 def get_discounted_cash_flow(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/discounted-cash-flow/{symbol}?apikey={api_key}"
     response = requests.get(url)
@@ -98,12 +97,11 @@ def get_discounted_cash_flow(symbol, api_key):
 
 st.sidebar.write("Please get your FMP API key here [link](https://financialmodelingprep.com/developer)")
 
-# Sidebar
+
 api_key = st.sidebar.text_input("Enter your API key")
 companies = get_financial_statement_symbols(api_key)
 selected_company = st.sidebar.selectbox("Select a company", companies)
 
-# Moved the button creation here
 if st.sidebar.button("Fetch data"):
     if api_key and selected_company:
         # Main content
@@ -118,7 +116,7 @@ if st.sidebar.button("Fetch data"):
         discounted_cash_flow_data = get_discounted_cash_flow(selected_company, api_key)
 
 
-        # Display income statement and balance sheet in tabular form
+       
         st.subheader("Income Statement")
         st.table(pd.DataFrame(income_data, index=[0]))
 
@@ -135,25 +133,24 @@ if st.sidebar.button("Fetch data"):
         df = pd.DataFrame(data)
 
 
-        # Get the list of possible columns to visualize (excluding 'date')
+       
         options = df.columns.drop('date').tolist()
 
-        # Use multiselect to let the user pick which columns to visualize
+        
         columns_to_plot = st.multiselect('Select the metrics to visualize', options)
 
-        # Create a Plotly figure
         fig = go.Figure()
 
-        # Add a trace for each selected column
+       
         for col in columns_to_plot:
             fig.add_trace(go.Scatter(x=df['date'], y=df[col], mode='lines+markers', name=col))
 
-        # Set plot title and labels
+    
         fig.update_layout(title='Financial Statement Growth Over the Years',
                         xaxis_title='Year',
                         yaxis_title='Growth')
 
-        # Display the figure
+    
         st.plotly_chart(fig)
 
         st.subheader("Financial Statement Growth")
@@ -169,7 +166,7 @@ if st.sidebar.button("Fetch data"):
         st.subheader("Discounted Cash Flow Value")
         st.table(pd.DataFrame(discounted_cash_flow_data))
 
-        # Calculate and display financial ratios with explanations
+        
         gross_margin = income_data['grossProfit'] / income_data['revenue']
         st.write("Gross Margin: This ratio indicates the percentage of revenue that exceeds the cost of goods sold. A higher gross margin indicates greater efficiency in turning raw materials into income.")
         st.write(f"**Gross Margin:** {(gross_margin)}")
@@ -186,7 +183,7 @@ if st.sidebar.button("Fetch data"):
         st.write("Return on Assets (ROA): This ratio indicates how profitable a company is relative to its total assets. ROA gives an idea as to how efficient management is at using its assets to generate earnings.")
         st.write(f"**Return on Assets (ROA):** {(roa)}")
 
-        # Calculate and display Operating Cash Flow and Free Cash Flow
+        
         operating_cash_flow = cash_flow_data['operatingCashFlow']
         st.write("Operating Cash Flow (OCF): This is a measure of the amount of cash generated by a company's normal business operations. It can be a better measure of a company's profitability as it is harder to manipulate with accounting practices.")
         st.write(f"**Operating Cash Flow:** {format_dollars(operating_cash_flow)}")
