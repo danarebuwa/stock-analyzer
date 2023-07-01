@@ -92,9 +92,10 @@ api_key = st.sidebar.text_input("Enter your API key")
 companies = get_financial_statement_symbols(api_key)
 selected_company = st.sidebar.selectbox("Select a company", companies)
 
-if api_key and selected_company:
-    # Main content
-    if st.sidebar.button("Fetch data"):
+# Moved the button creation here
+if st.sidebar.button("Fetch data"):
+    if api_key and selected_company:
+        # Main content
         income_data = get_income_statement(selected_company, api_key)[0]
         balance_data = get_balance_sheet(selected_company, api_key)
         cash_flow_data = get_cash_flow_statement(selected_company, api_key)
