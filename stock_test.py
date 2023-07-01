@@ -86,6 +86,7 @@ def get_discounted_cash_flow(symbol, api_key):
     return data
 
 st.sidebar.write("Please get your FMP API key here [link](https://financialmodelingprep.com/developer)")
+
 # Sidebar
 api_key = st.sidebar.text_input("Enter your API key")
 companies = get_financial_statement_symbols(api_key)
