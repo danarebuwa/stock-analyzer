@@ -15,17 +15,13 @@ if not st.session_state.get('data_fetched', False):  # If 'data_fetched' not set
 def format_dollars(value):
     return f"${value:,.0f}"
 
-# Function to fetch financial statement symbols
-@st.cache_resource(show_spinner=False)
-def fetch_resource(url: str):
-    return requests.get(url).json()
-
-
+@st.cache(show_spinner=False)
 def get_financial_statement_symbols(api_key):
     url = f"https://financialmodelingprep.com/api/v3/financial-statement-symbol-lists?apikey={api_key}"
-    data = fetch_resource(url)
+    response = requests.get(url)
+    data = response.json()
     return data
-
+    
 # Function to fetch income statement
 def get_income_statement(symbol, api_key):
     url = f"https://financialmodelingprep.com/api/v3/income-statement/{symbol}?limit=120&apikey={api_key}"
