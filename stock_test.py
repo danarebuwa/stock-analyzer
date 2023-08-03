@@ -136,21 +136,21 @@ if st.session_state['fetched_data'] is not None:
         st.subheader("Balance Sheet")
         st.table(balance_df)
 
-
         # Cash Flow Statement
-        cash_flow_data = st.session_state['fetched_data']['cash_flow_data']   
-        transposed_cash_flow_data = pd.DataFrame(cash_flow_data, index=[0]).transpose()
+        cash_flow_data = st.session_state['fetched_data']['cash_flow_data']
+        cash_flow_df = pd.DataFrame(cash_flow_data, index=[0]).transpose()
+        cash_flow_df = cash_flow_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Cash Flow Statement")
-        st.table(transposed_cash_flow_data)
+        st.table(cash_flow_df)
 
         # Enterprise Value
-        # If enterprise_value_data is a list of dictionaries, you might need to select the first dictionary
         enterprise_value_data = st.session_state['fetched_data']['enterprise_value_data']
         if isinstance(enterprise_value_data, list):
             enterprise_value_data = enterprise_value_data[0]
-        transposed_enterprise_value_data = pd.DataFrame(enterprise_value_data, index=[0]).transpose()
+        enterprise_value_df = pd.DataFrame(enterprise_value_data, index=[0]).transpose()
+        enterprise_value_df = enterprise_value_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Enterprise Value")
-        st.table(transposed_enterprise_value_data)
+        st.table(enterprise_value_df)
 
 
         data = get_financial_statement_growth(selected_company, api_key)
