@@ -133,7 +133,6 @@ if st.session_state['fetched_data'] is not None:
         balance_data = st.session_state['fetched_data']['balance_data']
         balance_df = pd.DataFrame(balance_data, index=[0]).transpose()
         balance_df = balance_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
-        transposed_balance_data = pd.DataFrame(balance_data, index=[0]).transpose()
         st.subheader("Balance Sheet")
         st.table(balance_df)
 
