@@ -182,51 +182,49 @@ if st.session_state['fetched_data'] is not None:
 
         # Display the figure
         st.plotly_chart(fig)
-
-
         # Transpose and display Financial Statement Growth
         # Assuming financial_statement_growth_data is a list of dictionaries
         financial_statement_growth_data = st.session_state['fetched_data']['financial_statement_growth_data']
         if isinstance(financial_statement_growth_data, list) and len(financial_statement_growth_data) > 0:
-            transposed_financial_statement_growth_data = pd.DataFrame(financial_statement_growth_data[0], index=[0]).transpose()
+            financial_statement_growth_df = pd.DataFrame(financial_statement_growth_data[0], index=[0]).transpose()
         else:
-            transposed_financial_statement_growth_data = pd.DataFrame(financial_statement_growth_data, index=[0]).transpose()
-
+            financial_statement_growth_df = pd.DataFrame(financial_statement_growth_data, index=[0]).transpose()
+        financial_statement_growth_df = financial_statement_growth_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Financial Statement Growth")
-        st.table(transposed_financial_statement_growth_data)
-
+        st.table(financial_statement_growth_df)
+        
         # Transpose and display Key Metrics
         # Assuming key_metrics_data is a list of dictionaries
         key_metrics_data = st.session_state['fetched_data']['key_metrics_data']
         if isinstance(key_metrics_data, list) and len(key_metrics_data) > 0:
-            transposed_key_metrics_data = pd.DataFrame(key_metrics_data[0], index=[0]).transpose()
+            key_metrics_df = pd.DataFrame(key_metrics_data[0], index=[0]).transpose()
         else:
-            transposed_key_metrics_data = pd.DataFrame(key_metrics_data, index=[0]).transpose()
-
+            key_metrics_df = pd.DataFrame(key_metrics_data, index=[0]).transpose()
+        key_metrics_df = key_metrics_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Key Metrics")
-        st.table(transposed_key_metrics_data)
-
+        st.table(key_metrics_df)
+        
         # Transpose and display Company Rating
         # Assuming company_rating_data is a list of dictionaries
         company_rating_data = st.session_state['fetched_data']['company_rating_data']
         if isinstance(company_rating_data, list) and len(company_rating_data) > 0:
-            transposed_company_rating_data = pd.DataFrame(company_rating_data[0], index=[0]).transpose()
+            company_rating_df = pd.DataFrame(company_rating_data[0], index=[0]).transpose()
         else:
-            transposed_company_rating_data = pd.DataFrame(company_rating_data, index=[0]).transpose()
-
+            company_rating_df = pd.DataFrame(company_rating_data, index=[0]).transpose()
+        company_rating_df = company_rating_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Company Rating")
-        st.table(transposed_company_rating_data)
-
+        st.table(company_rating_df)
+        
         # Transpose and display Discounted Cash Flow Value
         # Assuming discounted_cash_flow_data is a list of dictionaries
         discounted_cash_flow_data = st.session_state['fetched_data']['discounted_cash_flow_data']
         if isinstance(discounted_cash_flow_data, list) and len(discounted_cash_flow_data) > 0:
-            transposed_discounted_cash_flow_data = pd.DataFrame(discounted_cash_flow_data[0], index=[0]).transpose()
+            discounted_cash_flow_df = pd.DataFrame(discounted_cash_flow_data[0], index=[0]).transpose()
         else:
-            transposed_discounted_cash_flow_data = pd.DataFrame(discounted_cash_flow_data, index=[0]).transpose()
-
+            discounted_cash_flow_df = pd.DataFrame(discounted_cash_flow_data, index=[0]).transpose()
+        discounted_cash_flow_df = discounted_cash_flow_df.applymap(lambda x: "{:,}".format(x) if isinstance(x, (int, float)) else x)
         st.subheader("Discounted Cash Flow Value")
-        st.table(transposed_discounted_cash_flow_data)
+        st.table(discounted_cash_flow_df)
 
 
         # Calculate and display financial ratios with explanations
